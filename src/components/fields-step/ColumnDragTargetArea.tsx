@@ -105,6 +105,7 @@ const TargetBox: React.FC<{
       style={{ flexBasis }}
       onPointerEnter={() => onHover(field.name, true)}
       onPointerLeave={() => onHover(field.name, false)}
+      id={field.name}
     >
       <div className="CSVImporter_ColumnDragTargetArea__boxLabel" aria-hidden>
         {field.label}

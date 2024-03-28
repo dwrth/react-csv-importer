@@ -228,6 +228,14 @@ export const FieldsStep: React.FC<{
   useEffect(() => {
     if (dragState) {
       document.body.classList.add('CSVImporter_dragging');
+      if (dragState.dropFieldName) {
+        console.log(dragState.dropFieldName);
+        document.getElementById(`${dragState.dropFieldName}`)?.scrollIntoView({
+          behavior: 'smooth',
+
+          inline: 'nearest'
+        });
+      }
     } else {
       // remove text selection prevention after a delay (otherwise on iOS it still selects something)
       const timeoutId = setTimeout(() => {

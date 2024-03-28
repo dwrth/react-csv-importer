@@ -4,10 +4,12 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 2000;
     width: 100vw;
     height: 100vh;
     overflow: none; // clipping to avoid triggering scrollbar when dragging near edges
     pointer-events: none;
+    cursor: grabbing;
   }
 
   &__positioner {
