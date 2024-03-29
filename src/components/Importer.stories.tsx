@@ -17,24 +17,26 @@ type SampleImporterProps = ImporterProps<{ fieldA: string }>;
 
 export const Main: Story<SampleImporterProps> = (args: SampleImporterProps) => {
   return (
-    <Importer {...args}>
-      <ImporterField name="name" label="Name" />
-      <ImporterField name="email" label="Email" />
-      <ImporterField name="dob" label="Date of Birth" optional />
-      <ImporterField name="postalCode" label="Postal Code" optional />
-      <ImporterField name="postalCod2e" label="Postal234 Code" optional />
-      <ImporterField name="postalCode32" label="Pos236tal Code" optional />
-      <ImporterField name="postalCsod4e" label="Pos6tal Code" optional />
-      <ImporterField name="postalCod5e" label="Post4al Code" optional />
-      <ImporterField name="postalCod4e" label="Post32al Code" optional />
-      <ImporterField name="postalCod7e" label="Postsal Code" optional />
-      <ImporterField name="postalCod83e" label="Postaferl Code" optional />
-      <ImporterField name="postalCod72e" label="Post5al Code" optional />
-      <ImporterField name="postalCo4257de" label="Pos2t34al Code" optional />
-      <ImporterField name="postalCod257e" label="Post253al Code" optional />
-      <ImporterField name="postalCo27de" label="Post45al Code" optional />
-      <ImporterField name="postalCo457de" label="Postssal Code" optional />
-    </Importer>
+    <div style={{ height: '300px', maxHeight: '300px', overflow: 'scroll' }}>
+      <Importer {...args}>
+        <ImporterField name="name" label="Name" />
+        <ImporterField name="email" label="Email" />
+        <ImporterField name="dob" label="Date of Birth" optional />
+        <ImporterField name="postalCode" label="Postal Code" optional />
+        <ImporterField name="postalCod2e" label="Postal234 Code" optional />
+        <ImporterField name="postalCode32" label="Pos236tal Code" optional />
+        <ImporterField name="postalCsod4e" label="Pos6tal Code" optional />
+        <ImporterField name="postalCod5e" label="Post4al Code" optional />
+        <ImporterField name="postalCod4e" label="Post32al Code" optional />
+        <ImporterField name="postalCod7e" label="Postsal Code" optional />
+        <ImporterField name="postalCod83e" label="Postaferl Code" optional />
+        <ImporterField name="postalCod72e" label="Post5al Code" optional />
+        <ImporterField name="postalCo4257de" label="Pos2t34al Code" optional />
+        <ImporterField name="postalCod257e" label="Post253al Code" optional />
+        <ImporterField name="postalCo27de" label="Post45al Code" optional />
+        <ImporterField name="postalCo457de" label="Postssal Code" optional />
+      </Importer>
+    </div>
   );
 };
 
