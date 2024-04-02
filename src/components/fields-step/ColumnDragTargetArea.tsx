@@ -27,6 +27,7 @@ const TargetBox: React.FC<{
   onHover: (fieldName: string, isOn: boolean) => void;
   onAssign: (fieldName: string) => void;
   onUnassign: (column: Column) => void;
+  fieldId: string;
 }> = ({
   field,
   hasHeaders,
@@ -37,7 +38,8 @@ const TargetBox: React.FC<{
   eventBinder,
   onHover,
   onAssign,
-  onUnassign
+  onUnassign,
+  fieldId
 }) => {
   // respond to hover events when there is active mouse drag happening
   // (not keyboard-emulated one)
@@ -105,7 +107,7 @@ const TargetBox: React.FC<{
       style={{ flexBasis }}
       onPointerEnter={() => onHover(field.name, true)}
       onPointerLeave={() => onHover(field.name, false)}
-      id={field.name}
+      id={fieldId}
     >
       <div className="CSVImporter_ColumnDragTargetArea__boxLabel" aria-hidden>
         {field.label}
@@ -213,6 +215,7 @@ export const ColumnDragTargetArea: React.FC<{
             onHover={onHover}
             onAssign={onAssign}
             onUnassign={onUnassign}
+            fieldId={field.name}
           />
         );
       })}
