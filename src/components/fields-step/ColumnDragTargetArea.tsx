@@ -98,11 +98,7 @@ const TargetBox: React.FC<{
   return (
     <section
       className="CSVImporter_ColumnDragTargetArea__box"
-      aria-label={
-        field.isOptional
-          ? l10n.getDragTargetOptionalCaption(field.label)
-          : l10n.getDragTargetRequiredCaption(field.label)
-      }
+      aria-label={'poop'}
       ref={containerRef}
       style={{ flexBasis }}
       onPointerEnter={() => onHover(field.name, true)}
