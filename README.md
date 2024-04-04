@@ -1,4 +1,4 @@
-# React CSV Importer
+# React CSV Importer (Forked from [Beamworks](https://github.com/beamworks/react-csv-importer))
 
 [![https://www.npmjs.com/package/react-csv-importer](https://img.shields.io/npm/v/react-csv-importer)](https://www.npmjs.com/package/react-csv-importer) [![https://github.com/beamworks/react-csv-importer/actions](https://github.com/beamworks/react-csv-importer/actions/workflows/test.yml/badge.svg)](https://github.com/beamworks/react-csv-importer/actions)
 
