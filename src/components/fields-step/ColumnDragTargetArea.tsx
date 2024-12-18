@@ -66,15 +66,12 @@ const TargetBox: React.FC<{
 
   const valueContents = useMemo(() => {
     if (sourceColumn) {
-      return (
-        <ColumnDragCard rowCount={3} column={sourceColumn} isDropIndicator />
-      );
+      return <ColumnDragCard column={sourceColumn} isDropIndicator />;
     }
 
     if (assignedColumn) {
       return (
         <ColumnDragCard
-          rowCount={3}
           column={assignedColumn}
           isShadow={isReDragged}
           isDraggable={!isReDragged}
@@ -83,13 +80,7 @@ const TargetBox: React.FC<{
     }
 
     const hasError = touched && !field.isOptional;
-    return (
-      <ColumnDragCard
-        rowCount={3}
-        hasHeaders={hasHeaders}
-        hasError={hasError}
-      />
-    );
+    return <ColumnDragCard hasHeaders={hasHeaders} hasError={hasError} />;
   }, [hasHeaders, field, touched, assignedColumn, sourceColumn, isReDragged]);
 
   const l10n = useLocale('fieldsStep');
