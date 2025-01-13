@@ -17,7 +17,7 @@ type SampleImporterProps = ImporterProps<{ fieldA: string }>;
 
 export const Main: Story<SampleImporterProps> = (args: SampleImporterProps) => {
   return (
-    <div style={{ height: '300px', maxHeight: '300px', overflow: 'scroll' }}>
+    <div style={{ height: '300px', maxHeight: '300px' }}>
       <Importer {...args}>
         <ImporterField name="name" label="Name" />
         <ImporterField name="email" label="Email" />

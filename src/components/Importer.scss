@@ -2,7 +2,8 @@
   // base styling for all content
   box-sizing: border-box;
   line-height: 1.4;
-
+  overflow: scroll;
+  max-height: 100%;
   * {
     box-sizing: border-box;
   }

@@ -3572,13 +3572,13 @@ const TargetBox = ({ field, hasHeaders, flexBasis, touched, assignedColumn, drag
         : {}, [eventBinder, assignedColumn, isReDragged, field.name]);
     const valueContents = Object(external_react_["useMemo"])(() => {
         if (sourceColumn) {
-            return (external_react_default.a.createElement(ColumnDragCard_ColumnDragCard, { rowCount: 3, column: sourceColumn, isDropIndicator: true }));
+            return external_react_default.a.createElement(ColumnDragCard_ColumnDragCard, { column: sourceColumn, isDropIndicator: true });
         }
         if (assignedColumn) {
-            return (external_react_default.a.createElement(ColumnDragCard_ColumnDragCard, { rowCount: 3, column: assignedColumn, isShadow: isReDragged, isDraggable: !isReDragged }));
+            return (external_react_default.a.createElement(ColumnDragCard_ColumnDragCard, { column: assignedColumn, isShadow: isReDragged, isDraggable: !isReDragged }));
         }
         const hasError = touched && !field.isOptional;
-        return (external_react_default.a.createElement(ColumnDragCard_ColumnDragCard, { rowCount: 3, hasHeaders: hasHeaders, hasError: hasError }));
+        return external_react_default.a.createElement(ColumnDragCard_ColumnDragCard, { hasHeaders: hasHeaders, hasError: hasError });
     }, [hasHeaders, field, touched, assignedColumn, sourceColumn, isReDragged]);
     const l10n = useLocale('fieldsStep');
     // @todo mouse cursor changes to reflect draggable state
@@ -3726,37 +3726,64 @@ const FieldsStep = ({ fields, displayColumnPageSize, displayFieldRowSize, fileSt
             });
         }
     });
-    // drag gesture wire-up
+    // Add ref to store animation frame ID
+    const scrollAnimationRef = Object(external_react_["useRef"])();
+    // Add cleanup effect
+    Object(external_react_["useEffect"])(() => {
+        return () => {
+            if (scrollAnimationRef.current) {
+                cancelAnimationFrame(scrollAnimationRef.current);
+            }
+        };
+    }, []);
     const bindDrag = Object(use_gesture_react_esm["useDrag"])(({ first, last, movement, xy, args, currentTarget }) => {
         if (first) {
             const [column, startFieldName] = args;
             const initialClientRect = currentTarget instanceof HTMLElement
                 ? currentTarget.getBoundingClientRect()
-                : new DOMRect(xy[0], xy[1], 0, 0); // fall back on just pointer position
+                : new DOMRect(xy[0], xy[1], 0, 0);
             dragStartHandler(column, startFieldName, initialClientRect);
         }
         else if (last) {
             dragEndHandler();
+            // Cancel any ongoing scroll animation
+            if (scrollAnimationRef.current) {
+                cancelAnimationFrame(scrollAnimationRef.current);
+            }
         }
         else {
             dragMoveHandler(movement);
+            // Cancel any existing animation frame
+            if (scrollAnimationRef.current) {
+                cancelAnimationFrame(scrollAnimationRef.current);
+            }
+            // Add auto-scrolling when near container edges
+            const container = document.querySelector('.CSVImporter_Importer');
+            if (container) {
+                const rect = container.getBoundingClientRect();
+                const scrollSpeed = 3;
+                const scrollThreshold = 50;
+                const scroll = () => {
+                    if (xy[1] < rect.top + scrollThreshold) {
+                        container.scrollTop -= scrollSpeed;
+                        scrollAnimationRef.current = requestAnimationFrame(scroll);
+                    }
+                    else if (xy[1] > rect.bottom - scrollThreshold) {
+                        container.scrollTop += scrollSpeed;
+                        scrollAnimationRef.current = requestAnimationFrame(scroll);
+                    }
+                };
+                scroll();
+            }
         }
     }, {
-        pointer: { capture: false } // turn off pointer capture to avoid interfering with hover tests
+        pointer: { capture: false }
     });
     // when dragging, set root-level user-select:none to prevent text selection, see Importer.scss
     // (done via class toggle to avoid interfering with any other dynamic style changes)
     Object(external_react_["useEffect"])(() => {
-        var _a;
         if (dragState) {
             document.body.classList.add('CSVImporter_dragging');
-            if (dragState.dropFieldName) {
-                (_a = document.getElementById(`${dragState.dropFieldName}`)) === null || _a === void 0 ? void 0 : _a.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                    inline: 'center'
-                });
-            }
         }
         else {
             // remove text selection prevention after a delay (otherwise on iOS it still selects something)

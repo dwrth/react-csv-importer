@@ -201,7 +201,18 @@ export const FieldsStep: React.FC<{
     }
   });
 
-  // drag gesture wire-up
+  // Add ref to store animation frame ID
+  const scrollAnimationRef = useRef<number>();
+
+  // Add cleanup effect
+  useEffect(() => {
+    return () => {
+      if (scrollAnimationRef.current) {
+        cancelAnimationFrame(scrollAnimationRef.current);
+      }
+    };
+  }, []);
+
   const bindDrag = useDrag(
     ({ first, last, movement, xy, args, currentTarget }) => {
       if (first) {
@@ -209,17 +220,46 @@ export const FieldsStep: React.FC<{
         const initialClientRect =
           currentTarget instanceof HTMLElement
             ? currentTarget.getBoundingClientRect()
-            : new DOMRect(xy[0], xy[1], 0, 0); // fall back on just pointer position
+            : new DOMRect(xy[0], xy[1], 0, 0);
 
         dragStartHandler(column, startFieldName, initialClientRect);
       } else if (last) {
         dragEndHandler();
+        // Cancel any ongoing scroll animation
+        if (scrollAnimationRef.current) {
+          cancelAnimationFrame(scrollAnimationRef.current);
+        }
       } else {
         dragMoveHandler(movement);
+
+        // Cancel any existing animation frame
+        if (scrollAnimationRef.current) {
+          cancelAnimationFrame(scrollAnimationRef.current);
+        }
+
+        // Add auto-scrolling when near container edges
+        const container = document.querySelector('.CSVImporter_Importer');
+        if (container) {
+          const rect = container.getBoundingClientRect();
+          const scrollSpeed = 3;
+          const scrollThreshold = 50;
+
+          const scroll = () => {
+            if (xy[1] < rect.top + scrollThreshold) {
+              container.scrollTop -= scrollSpeed;
+              scrollAnimationRef.current = requestAnimationFrame(scroll);
+            } else if (xy[1] > rect.bottom - scrollThreshold) {
+              container.scrollTop += scrollSpeed;
+              scrollAnimationRef.current = requestAnimationFrame(scroll);
+            }
+          };
+
+          scroll();
+        }
       }
     },
     {
-      pointer: { capture: false } // turn off pointer capture to avoid interfering with hover tests
+      pointer: { capture: false }
     }
   );
 
@@ -228,13 +268,6 @@ export const FieldsStep: React.FC<{
   useEffect(() => {
     if (dragState) {
       document.body.classList.add('CSVImporter_dragging');
-      if (dragState.dropFieldName) {
-        document.getElementById(`${dragState.dropFieldName}`)?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-          inline: 'center'
-        });
-      }
     } else {
       // remove text selection prevention after a delay (otherwise on iOS it still selects something)
       const timeoutId = setTimeout(() => {
