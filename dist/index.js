@@ -3840,7 +3840,7 @@ function countUTF8Bytes(item) {
     const normalized = escaped.replace(/%\d\d/g, '_');
     return normalized.length;
 }
-function ProgressDisplay_ProgressDisplay({ fileState, fieldsState, externalPreview, dataHandler, onStart, onComplete, onRestart, onClose }) {
+function ProgressDisplay_ProgressDisplay({ fileState, fieldsState, externalPreview, dataHandler, onStart, onComplete, onRestart, onClose, isGuestImport, guestImportScreen }) {
     const [progressCount, setProgressCount] = Object(external_react_["useState"])(0);
     const [isComplete, setIsComplete] = Object(external_react_["useState"])(false);
     const [error, setError] = Object(external_react_["useState"])(null);
@@ -3962,13 +3962,14 @@ function ProgressDisplay_ProgressDisplay({ fileState, fieldsState, externalPrevi
             }
         } },
         external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay" },
-            isComplete || error ? (external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__status", role: "status", tabIndex: -1, ref: statusRef }, error ? l10n.statusError : l10n.statusComplete)) : (external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__status -pending", role: "status" }, l10n.statusPending)),
-            external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__count", role: "text" },
-                external_react_default.a.createElement("var", null, l10n.processedRowsLabel),
-                " ",
-                progressCount),
-            external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__progressBar" },
-                external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__progressBarIndicator", style: { width: `${progressPercentage}%` } })))));
+            (isComplete && !isGuestImport) || error ? (external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__status", role: "status", tabIndex: -1, ref: statusRef }, error ? l10n.statusError : l10n.statusComplete)) : (external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__status -pending", role: "status" }, l10n.statusPending)),
+            isGuestImport && guestImportScreen ? (guestImportScreen) : (external_react_default.a.createElement(external_react_default.a.Fragment, null,
+                external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__count", role: "text" },
+                    external_react_default.a.createElement("var", null, l10n.processedRowsLabel),
+                    " ",
+                    progressCount),
+                external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__progressBar" },
+                    external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__progressBarIndicator", style: { width: `${progressPercentage}%` } })))))));
 }
 
 // CONCATENATED MODULE: ./src/components/ImporterField.tsx
@@ -4109,17 +4110,18 @@ function Importer_Importer(props) {
                     : content))));
     }
     return (external_react_default.a.createElement(LocaleContext.Provider, { value: locale },
-        external_react_default.a.createElement("div", { className: "CSVImporter_Importer" }, isGuestImport ? (guestImportScreen) : (external_react_default.a.createElement(ProgressDisplay_ProgressDisplay, { fileState: fileState, fieldsState: fieldsState, externalPreview: externalPreview, 
-            // @todo remove assertion after upgrading to TS 4.1+
-            dataHandler: dataHandler !== null && dataHandler !== void 0 ? dataHandler : processChunk, onStart: onStart, onRestart: restartable
-                ? () => {
-                    // reset all state
-                    setFileState(null);
-                    setFileAccepted(false);
-                    setFieldsState(null);
-                    setFieldsAccepted(false);
-                }
-                : undefined, onComplete: onComplete, onClose: onClose })))));
+        external_react_default.a.createElement("div", { className: "CSVImporter_Importer" },
+            external_react_default.a.createElement(ProgressDisplay_ProgressDisplay, { fileState: fileState, fieldsState: fieldsState, externalPreview: externalPreview, 
+                // @todo remove assertion after upgrading to TS 4.1+
+                dataHandler: dataHandler !== null && dataHandler !== void 0 ? dataHandler : processChunk, onStart: onStart, onRestart: restartable
+                    ? () => {
+                        // reset all state
+                        setFileState(null);
+                        setFileAccepted(false);
+                        setFieldsState(null);
+                        setFieldsAccepted(false);
+                    }
+                    : undefined, onComplete: onComplete, onClose: onClose, isGuestImport: isGuestImport, guestImportScreen: guestImportScreen }))));
 }
 
 // CONCATENATED MODULE: ./src/index.ts
