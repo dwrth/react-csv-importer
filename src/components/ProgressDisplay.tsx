@@ -29,7 +29,9 @@ export function ProgressDisplay<Row extends BaseRow>({
   onStart,
   onComplete,
   onRestart,
-  onClose
+  onClose,
+  isGuestImport,
+  guestImportScreen
 }: React.PropsWithChildren<{
   fileState: FileStepState;
   fieldsState: FieldsStepState;
@@ -39,6 +41,8 @@ export function ProgressDisplay<Row extends BaseRow>({
   onComplete?: (info: ImportInfo) => void;
   onRestart?: () => void;
   onClose?: (info: ImportInfo) => void;
+  isGuestImport?: boolean;
+  guestImportScreen?: React.ReactNode;
 }>): React.ReactElement {
   const [progressCount, setProgressCount] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
@@ -207,7 +211,7 @@ export function ProgressDisplay<Row extends BaseRow>({
       }}
     >
       <div className="CSVImporter_ProgressDisplay">
-        {isComplete || error ? (
+        {(isComplete && !isGuestImport) || error ? (
           <div
             className="CSVImporter_ProgressDisplay__status"
             role="status"
@@ -225,16 +229,21 @@ export function ProgressDisplay<Row extends BaseRow>({
           </div>
         )}
 
-        <div className="CSVImporter_ProgressDisplay__count" role="text">
-          <var>{l10n.processedRowsLabel}</var> {progressCount}
-        </div>
-
-        <div className="CSVImporter_ProgressDisplay__progressBar">
-          <div
-            className="CSVImporter_ProgressDisplay__progressBarIndicator"
-            style={{ width: `${progressPercentage}%` }}
-          />
-        </div>
+        {isGuestImport && guestImportScreen ? (
+          guestImportScreen
+        ) : (
+          <>
+            <div className="CSVImporter_ProgressDisplay__count" role="text">
+              <var>{l10n.processedRowsLabel}</var> {progressCount}
+            </div>
+            <div className="CSVImporter_ProgressDisplay__progressBar">
+              <div
+                className="CSVImporter_ProgressDisplay__progressBarIndicator"
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
+          </>
+        )}
       </div>
     </ImporterFrame>
   );

@@ -1,6 +1,6 @@
 {
   "name": "react-csv-importer-dwerth",
-  "version": "0.8.11",
+  "version": "0.8.12",
   "description": "React CSV import widget with user-customizable mapping",
   "keywords": [
     "react",

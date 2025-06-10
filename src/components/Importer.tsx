@@ -131,31 +131,29 @@ export function Importer<Row extends BaseRow>(
   return (
     <LocaleContext.Provider value={locale}>
       <div className="CSVImporter_Importer">
-        {isGuestImport ? (
-          guestImportScreen
-        ) : (
-          <ProgressDisplay
-            fileState={fileState}
-            fieldsState={fieldsState}
-            externalPreview={externalPreview}
-            // @todo remove assertion after upgrading to TS 4.1+
-            dataHandler={dataHandler ?? processChunk!} // eslint-disable-line @typescript-eslint/no-non-null-assertion
-            onStart={onStart}
-            onRestart={
-              restartable
-                ? () => {
-                    // reset all state
-                    setFileState(null);
-                    setFileAccepted(false);
-                    setFieldsState(null);
-                    setFieldsAccepted(false);
-                  }
-                : undefined
-            }
-            onComplete={onComplete}
-            onClose={onClose}
-          />
-        )}
+        <ProgressDisplay
+          fileState={fileState}
+          fieldsState={fieldsState}
+          externalPreview={externalPreview}
+          // @todo remove assertion after upgrading to TS 4.1+
+          dataHandler={dataHandler ?? processChunk!} // eslint-disable-line @typescript-eslint/no-non-null-assertion
+          onStart={onStart}
+          onRestart={
+            restartable
+              ? () => {
+                  // reset all state
+                  setFileState(null);
+                  setFileAccepted(false);
+                  setFieldsState(null);
+                  setFieldsAccepted(false);
+                }
+              : undefined
+          }
+          onComplete={onComplete}
+          onClose={onClose}
+          isGuestImport={isGuestImport}
+          guestImportScreen={guestImportScreen}
+        />
       </div>
     </LocaleContext.Provider>
   );
