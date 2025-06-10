@@ -4051,7 +4051,7 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 
 
 function Importer_Importer(props) {
-    const { dataHandler, processChunk, defaultNoHeader, assumeNoHeaders, restartable, displayFieldRowSize, displayColumnPageSize, onStart, onComplete, onClose, children: content, locale: userLocale } = props, customPapaParseConfig = __rest(props, ["dataHandler", "processChunk", "defaultNoHeader", "assumeNoHeaders", "restartable", "displayFieldRowSize", "displayColumnPageSize", "onStart", "onComplete", "onClose", "children", "locale"]);
+    const { dataHandler, processChunk, defaultNoHeader, assumeNoHeaders, restartable, displayFieldRowSize, displayColumnPageSize, onStart, onComplete, onClose, children: content, locale: userLocale, isGuestImport, guestImportScreen } = props, customPapaParseConfig = __rest(props, ["dataHandler", "processChunk", "defaultNoHeader", "assumeNoHeaders", "restartable", "displayFieldRowSize", "displayColumnPageSize", "onStart", "onComplete", "onClose", "children", "locale", "isGuestImport", "guestImportScreen"]);
     // helper to combine our displayed content and the user code that provides field definitions
     const [fields, userFieldContentWrapper] = useFieldDefinitions();
     const [fileState, setFileState] = Object(external_react_["useState"])(null);
@@ -4109,18 +4109,17 @@ function Importer_Importer(props) {
                     : content))));
     }
     return (external_react_default.a.createElement(LocaleContext.Provider, { value: locale },
-        external_react_default.a.createElement("div", { className: "CSVImporter_Importer" },
-            external_react_default.a.createElement(ProgressDisplay_ProgressDisplay, { fileState: fileState, fieldsState: fieldsState, externalPreview: externalPreview, 
-                // @todo remove assertion after upgrading to TS 4.1+
-                dataHandler: dataHandler !== null && dataHandler !== void 0 ? dataHandler : processChunk, onStart: onStart, onRestart: restartable
-                    ? () => {
-                        // reset all state
-                        setFileState(null);
-                        setFileAccepted(false);
-                        setFieldsState(null);
-                        setFieldsAccepted(false);
-                    }
-                    : undefined, onComplete: onComplete, onClose: onClose }))));
+        external_react_default.a.createElement("div", { className: "CSVImporter_Importer" }, isGuestImport ? (guestImportScreen) : (external_react_default.a.createElement(ProgressDisplay_ProgressDisplay, { fileState: fileState, fieldsState: fieldsState, externalPreview: externalPreview, 
+            // @todo remove assertion after upgrading to TS 4.1+
+            dataHandler: dataHandler !== null && dataHandler !== void 0 ? dataHandler : processChunk, onStart: onStart, onRestart: restartable
+                ? () => {
+                    // reset all state
+                    setFileState(null);
+                    setFileAccepted(false);
+                    setFieldsState(null);
+                    setFieldsAccepted(false);
+                }
+                : undefined, onComplete: onComplete, onClose: onClose })))));
 }
 
 // CONCATENATED MODULE: ./src/index.ts
