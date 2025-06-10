@@ -194,21 +194,36 @@ export function ProgressDisplay<Row extends BaseRow>({
       subtitle={l10n.stepSubtitle}
       error={error && (error.message || String(error))}
       secondaryDisabled={!isComplete || isDismissed}
-      secondaryLabel={onRestart && onClose ? l10n.uploadMoreButton : undefined}
-      onSecondary={onRestart && onClose ? onRestart : undefined}
+      secondaryLabel={
+        isGuestImport
+          ? undefined
+          : onRestart && onClose
+          ? l10n.uploadMoreButton
+          : undefined
+      }
+      onSecondary={
+        isGuestImport ? undefined : onRestart && onClose ? onRestart : undefined
+      }
       nextDisabled={!isComplete || isDismissed}
       nextLabel={
-        !!(onClose || onRestart) &&
-        (onClose ? l10n.finishButton : l10n.uploadMoreButton)
+        isGuestImport
+          ? false
+          : !!(onClose || onRestart) &&
+            (onClose ? l10n.finishButton : l10n.uploadMoreButton)
       }
-      onNext={() => {
-        if (onClose) {
-          setIsDismissed(true);
-          onClose(importInfo);
-        } else if (onRestart) {
-          onRestart();
-        }
-      }}
+      onNext={
+        isGuestImport
+          ? // @eslint-disable-next-line @typescript-eslint/no-empty-function
+            () => {}
+          : () => {
+              if (onClose) {
+                setIsDismissed(true);
+                onClose(importInfo);
+              } else if (onRestart) {
+                onRestart();
+              }
+            }
+      }
     >
       <div className="CSVImporter_ProgressDisplay">
         {(isComplete && !isGuestImport) || error ? (
