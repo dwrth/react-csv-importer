@@ -8,7 +8,7 @@ export const enUS: ImporterLocale = {
 
   fileStep: {
     initialDragDropPrompt:
-      'Drag-and-drop CSV file here, or click to select in folder',
+      'Drag-and-drop CSV file here, or click to select in folder. (The file must be saved with UTF-8 encoding!)',
     activeDragDropPrompt: 'Drop CSV file here...',
 
     getImportError: (message) => `Import error: ${message}`,

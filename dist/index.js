@@ -2711,7 +2711,7 @@ const enUS = {
         goToPreviousStepTooltip: 'Go to previous step'
     },
     fileStep: {
-        initialDragDropPrompt: 'Drag-and-drop CSV file here, or click to select in folder',
+        initialDragDropPrompt: 'Drag-and-drop CSV file here, or click to select in folder. (The file must be saved with UTF-8 encoding!)',
         activeDragDropPrompt: 'Drop CSV file here...',
         getImportError: (message) => `Import error: ${message}`,
         getDataFormatError: (message) => `Please check data formatting: ${message}`,
