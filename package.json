@@ -1,6 +1,6 @@
 {
   "name": "react-csv-importer-dwerth",
-  "version": "0.8.13",
+  "version": "0.8.14",
   "description": "React CSV import widget with user-customizable mapping",
   "keywords": [
     "react",
@@ -24,7 +24,7 @@
     "dist/**"
   ],
   "scripts": {
-    "prepare": "webpack --mode production && dts-bundle-generator -o dist/index.d.ts src/index.ts",
+    "prepare": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --mode production && dts-bundle-generator -o dist/index.d.ts src/index.ts",
     "lint": "eslint --max-warnings=0 --ext ts --ext tsx src",
     "lint-fix": "eslint --max-warnings=0 --ext ts --ext tsx src --fix",
     "stylelint": "stylelint \"src/**/*.scss\"",

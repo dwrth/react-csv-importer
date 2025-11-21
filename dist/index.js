@@ -2761,7 +2761,7 @@ const deDE = {
         goToPreviousStepTooltip: 'Zum vorherigen Schritt'
     },
     fileStep: {
-        initialDragDropPrompt: 'CSV-Datei auf dieses Feld ziehen, oder klicken um eine Datei auszuwählen',
+        initialDragDropPrompt: 'CSV-Datei auf dieses Feld ziehen, oder klicken um eine Datei auszuwählen. (Die Datei muss mit UTF-8 Kodierung gespeichert sein!)',
         activeDragDropPrompt: 'CSV-Datei auf dieses Feld ziehen...',
         nextButton: 'Spalten auswählen',
         getImportError: (message) => `Fehler beim Import: ${message}`,
@@ -3951,16 +3951,25 @@ function ProgressDisplay_ProgressDisplay({ fileState, fieldsState, externalPrevi
         return Math.floor(1000 - 1000 * progressLeft) / 10;
     }, [estimatedRowCount, progressCount, isComplete]);
     const l10n = useLocale('progressStep');
-    return (external_react_default.a.createElement(ImporterFrame_ImporterFrame, { fileName: fileState.file.name, subtitle: l10n.stepSubtitle, error: error && (error.message || String(error)), secondaryDisabled: !isComplete || isDismissed, secondaryLabel: onRestart && onClose ? l10n.uploadMoreButton : undefined, onSecondary: onRestart && onClose ? onRestart : undefined, nextDisabled: !isComplete || isDismissed, nextLabel: !!(onClose || onRestart) &&
-            (onClose ? l10n.finishButton : l10n.uploadMoreButton), onNext: () => {
-            if (onClose) {
-                setIsDismissed(true);
-                onClose(importInfo);
-            }
-            else if (onRestart) {
-                onRestart();
-            }
-        } },
+    return (external_react_default.a.createElement(ImporterFrame_ImporterFrame, { fileName: fileState.file.name, subtitle: l10n.stepSubtitle, error: error && (error.message || String(error)), secondaryDisabled: !isComplete || isDismissed, secondaryLabel: isGuestImport
+            ? undefined
+            : onRestart && onClose
+                ? l10n.uploadMoreButton
+                : undefined, onSecondary: isGuestImport ? undefined : onRestart && onClose ? onRestart : undefined, nextDisabled: !isComplete || isDismissed, nextLabel: isGuestImport
+            ? false
+            : !!(onClose || onRestart) &&
+                (onClose ? l10n.finishButton : l10n.uploadMoreButton), onNext: isGuestImport
+            ? // @eslint-disable-next-line @typescript-eslint/no-empty-function
+                () => { }
+            : () => {
+                if (onClose) {
+                    setIsDismissed(true);
+                    onClose(importInfo);
+                }
+                else if (onRestart) {
+                    onRestart();
+                }
+            } },
         external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay" },
             (isComplete && !isGuestImport) || error ? (external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__status", role: "status", tabIndex: -1, ref: statusRef }, error ? l10n.statusError : l10n.statusComplete)) : (external_react_default.a.createElement("div", { className: "CSVImporter_ProgressDisplay__status -pending", role: "status" }, l10n.statusPending)),
             isGuestImport && guestImportScreen ? (guestImportScreen) : (external_react_default.a.createElement(external_react_default.a.Fragment, null,

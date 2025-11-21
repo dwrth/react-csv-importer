@@ -8,7 +8,7 @@ export const deDE: ImporterLocale = {
 
   fileStep: {
     initialDragDropPrompt:
-      'CSV-Datei auf dieses Feld ziehen, oder klicken um eine Datei auszuwählen',
+      'CSV-Datei auf dieses Feld ziehen, oder klicken um eine Datei auszuwählen. (Die Datei muss mit UTF-8 Kodierung gespeichert sein!)',
     activeDragDropPrompt: 'CSV-Datei auf dieses Feld ziehen...',
     nextButton: 'Spalten auswählen',
 
